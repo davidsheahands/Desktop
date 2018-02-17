@@ -1,0 +1,181 @@
+package View;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
+
+import Business_Logic.Controller;
+
+public class My_Desktop extends JFrame implements Serializable {
+    public JDesktopPane theDesktopJFrame = new JDesktopPane();
+    private ImageIcon picture;
+    private JMenuBar menuBar;
+    private JMenu menuPrograms;
+    private JMenu menuHelp;
+    private JMenuItem menuItemTable;
+    private JMenuItem menuItemBrowser;
+    private JMenuItem menuItemJPanel;
+    private JMenuItem menuItemSystem;
+    private JMenuItem menuItemUpdate;
+    private JMenuItem menuItemHelp;
+    private ArrayList<String> JMenuProgramNames = new ArrayList();
+    private ArrayList<JMenuItem> JMenuProgramItems = new ArrayList();
+    private ArrayList<String> JMenuHelpNames = new ArrayList();
+    private ArrayList<JMenuItem> JMenuHelpItems = new ArrayList();
+    
+    
+
+    public My_Desktop() {
+    	
+    	//may have to make all these classes searilazable for the cloud
+    	
+    	super("have to add in a search tool from the desktop extra bits see book");
+    	
+    	
+    	 
+    	//Controller.getInstance().createFiles();
+        
+        
+        ClickHandler handler = new ClickHandler();
+        final JPopupMenu popUp = new JPopupMenu();
+        popUp.add("one");
+        //this.theDesktop.add(popUp);
+        this.add(popUp);
+        this.addMouseListener(new MouseAdapter(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(theDesktopJFrame, "PUT A FILE HERE TO CLICK ON");
+                if (e.getSource().toString() == "*.jar") {
+                    JOptionPane.showMessageDialog(theDesktopJFrame, "launch the Installer");
+                } else if (e.getSource().toString() == "*.exe") {
+                    JOptionPane.showMessageDialog(theDesktopJFrame, "launch the Installer");
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                this.checkForTriggerEvent(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                this.checkForTriggerEvent(e);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+
+            private void checkForTriggerEvent(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    popUp.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
+        this.menuBar = new JMenuBar();
+        this.JMenuProgramNames.add("Test");
+        this.JMenuProgramNames.add("Table");
+        this.JMenuProgramNames.add("Browser");
+        this.JMenuProgramNames.add("TextEdit");
+        this.JMenuProgramNames.add("Draw");
+        this.JMenuProgramNames.add("Other");
+        this.JMenuHelpNames.add("Shutdown");
+        this.JMenuHelpNames.add("System");
+        this.JMenuHelpNames.add("Update");
+        this.JMenuHelpNames.add("Restore");
+        this.JMenuHelpNames.add("Add Program");
+        this.JMenuHelpNames.add("Remove Program");
+        this.JMenuHelpNames.add("Help");
+        this.menuPrograms = new JMenu("Programs");
+        int i = 0;
+        while (i < this.JMenuProgramNames.size()) {
+            this.JMenuProgramItems.add(i, new JMenuItem(this.JMenuProgramNames.get(i)));
+            this.JMenuProgramItems.get(i).addActionListener(handler);
+            this.menuPrograms.add(this.JMenuProgramItems.get(i));
+            ++i;
+        }
+        this.menuBar.add(this.menuPrograms);
+        this.menuHelp = new JMenu("Help");
+        i = 0;
+        while (i < this.JMenuHelpNames.size()) {
+            this.JMenuHelpItems.add(i, new JMenuItem(this.JMenuHelpNames.get(i)));
+            this.JMenuHelpItems.get(i).addActionListener(handler);
+            this.menuHelp.add(this.JMenuHelpItems.get(i));
+            ++i;
+        }
+        this.menuBar.add(this.menuHelp);
+        this.menuBar.add(this.menuHelp);
+        this.setJMenuBar(this.menuBar);
+        JPanel thePanel = new JPanel();
+        theDesktopJFrame.add(thePanel);
+        this.add(theDesktopJFrame); 
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponents(g);
+        g.setColor(Color.black);
+    }
+
+    public class ClickHandler implements ActionListener {
+        //private File fileName;
+        JFrame outerFrame;
+
+       public ClickHandler() {
+
+            this.outerFrame = (JFrame)My_Desktop.this.getRootPane().getParent();
+        	//String program = this.outerFrame.getText();
+            //this.fileName = new File("help.txt");
+        }
+
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+                        
+        	String program = event.getActionCommand().toString();
+        	
+        	//program theNumber = new program();
+        	//JMenuProgramNames.get(1) theProgram = new JMenuProgramNames.get(1)();
+        	//trying dependency injection instead or might use giant switch statement
+        	
+        	JOptionPane.showMessageDialog(theDesktopJFrame, program);
+        	 
+        	 
+        	 Controller.getInstance().chooseProgram(program);
+        	 
+        	
+        }
+        
+    }
+
+}
+
+
