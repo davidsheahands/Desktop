@@ -1,0 +1,21 @@
+
+/**
+ * @author David
+ *
+ */
+
+import javax.swing.JDesktopPane;
+
+import Business_Logic.Controller;
+
+import View.My_Desktop;
+
+public class My_Application {
+    public static void main(String[] args) {
+        My_Desktop theDestop = new My_Desktop();
+        //JDesktopPane theActualDesktop = new JDesktopPane();
+        //theActualDesktop.add(theDestop);
+        theDestop.setVisible(true);
+        theDestop.setSize(1024, 960);
+    }
+}
